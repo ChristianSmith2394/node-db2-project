@@ -1,22 +1,42 @@
 const router = require('express').Router()
-const Cars = require('./cars-model')
-const {
-    checkCarId,
+const Car = require('./cars-model')
+const { checkCarId,
     checkCarPayload,
     checkVinNumberValid,
-    checkVinNumberUnique
-} = require('./cars-middleware')
+    checkVinNumberUnique } = require('./cars-middleware')
 
-router.get('/', async (req, res, next) => {
-    await Cars.getAll(req.query)
-    .then((cars) => {
-        res.status(200).json(cars)
-    })
-    .catch(next)
+router.get('/api/cars', (req, res) => {
+    Car.getAll()
+        .then(allCars => {
+            res.status(200).json(allCars)
+        })
+        .catch(err => {
+            res.status(500).json({ message: err.message })
+        })
+    console.log('getting all cars')
 })
 
-router.get('/:id', checkCarId, (req, res) => {
-    res.json(req.verified)
+router.get('/api/cars/:id', checkCarId, (req, res) => {
+    const { id } = req.params;
+    Car.getById(id)
+        .then(car => {
+            res.status(200).json(car)
+        })
+        .catch(err => {
+            res.status(400).json({ message: err.message })
+        })
 })
 
-module.exports = router
+router.post('/api/cars', checkVinNumberUnique, checkVinNumberValid, checkCarPayload, (req, res) => {
+    Car.create(req.body)
+        .then(newCar => {
+            res.status(201).json(newCar)
+        })
+        .catch(err => {
+            res.status(500).json({ message: err.message })
+        })
+})
+
+
+
+module.exports = router;
