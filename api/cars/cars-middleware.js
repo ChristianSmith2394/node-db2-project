@@ -4,7 +4,6 @@ var vinValidator = require('vin-validator');
 
 
 const checkCarId = (req, res, next) => {
-  // DO YOUR MAGIC
   console.log('verifying id')
   const { id } = req.params;
   Car.getById(id)
@@ -19,7 +18,6 @@ const checkCarId = (req, res, next) => {
 }
 
 const checkCarPayload = (req, res, next) => {
-  // DO YOUR MAGIC
   if (!req.body.vin) {
     res.status(400).json({ message: 'vin is missing' })
   } else if (!req.body.make) {
@@ -34,7 +32,6 @@ const checkCarPayload = (req, res, next) => {
 }
 
 const checkVinNumberValid = (req, res, next) => {
-  // DO YOUR MAGIC
   let isVinValid = vinValidator.validate(req.body.vin);
   if (!isVinValid) {
     res.status(400).json({ message: `vin ${req.body.vin} is invalid` })

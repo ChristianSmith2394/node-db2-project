@@ -33,7 +33,7 @@ router.post('/api/cars', checkVinNumberUnique, checkVinNumberValid, checkCarPayl
             res.status(201).json(newCar)
         })
         .catch(err => {
-            res.status(500).json({ message: err.message })
+            res.status(400).json({ message: err.message })
         })
 })
 

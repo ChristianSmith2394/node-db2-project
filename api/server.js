@@ -6,6 +6,5 @@ const server = express()
 server.use(express.json())
 server.use('/', carsRouter)
 
-// DO YOUR MAGIC
 
 module.exports = server
